@@ -1,0 +1,24 @@
+yb=0;
+ya=1;
+ya_=1;
+ub=0.04;
+ua=0.002;
+ua_=-0.008;
+n=1.5;
+C1=1/100;
+C2=1/-100;
+phi=1/100;
+t=0;
+NA=0.00799998400005;
+w=singlet_aberration_contribution(C1,C2,ya,yb,ua,ua_,ub,n,phi);
+a=0.85937/0.68756;
+aberration_to_sigma(w,NA);
+wa=asphere_aberration_contribution(1,0.5,ya,yb);
+aberration_to_sigma(wa,NA);
+dj=3e-7;
+dj=0;
+inc_n=0.5;
+Phi=1/100;
+fourth_three_curvature_solver(C1,C2,Phi,dj,inc_n,ya,ya_,yb,ua,ua_,ub)
+ft_all=[100 -100 100 0 0];
+two_singlet_evaluater(C1,C2,ft_all,Phi,dj,inc_n,ya,ya_,yb,ua,ua_,ub);

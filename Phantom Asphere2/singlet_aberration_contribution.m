@@ -1,0 +1,19 @@
+function result=singlet_aberration_contribution(C1,C2,ya,yb,ua,ua_,ub,n,phi)
+m=ua/ua_;
+Y=(1+m)/(1-m);
+X=(C1+C2)/(C1-C2);
+H=1*ua*yb-1*ub*ya;
+A=(n+2)/(n*(n-1)^2);
+B=4*(n+1)/(n*(n-1));
+C=(3*n+2)/n;
+D=n^2/(n-1)^2;
+E=(n+1)/(n*(n-1));
+F=(2*n+1)/n;
+gamma1=A*X^2-B*X*Y+C*Y^2+D;
+gamma2=E*X-F*Y;
+w1=1/32*ya^4*phi^3*gamma1;
+w2=-1/4*H*ya^2*phi^2*gamma2;
+w3=1/2*H^2*phi;
+w4=1/4*H^2*phi/n;
+result=[w1,w2,w3,w4];
+end

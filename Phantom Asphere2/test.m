@@ -1,0 +1,13 @@
+yb=0;
+ya=1;
+ub=0.04;
+ua=0.002;
+ua_=-0.008;
+n=1.5;
+C1=1/100;
+C2=1/-100;
+phi=1/100;
+NA=0.00799998400005;
+w=singlet_aberration_contribution(C1,C2,ya,yb,ua,ua_,ub,n,phi);
+a=0.85937/0.68756;
+aberration_to_sigma(w,NA)
