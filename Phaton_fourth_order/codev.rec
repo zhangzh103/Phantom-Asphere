@@ -1,0 +1,22 @@
+SEE 0
+LEN NEW
+GBL NUM ^CV_BACKEND_STARTUP_SEQUENCE; ^CV_BACKEND_STARTUP_SEQUENCE == 1
+RES "C:\Users\32141\Downloads\Phaton_fourth_order\ag_dblgauss_test.len"
+SAV "C:\Users\32141\Downloads\Phaton_fourth_order\Sample\ag_dblgauss_asphere.len"
+VIE; CAN;
+VIE
+GO
+in cv_macro:cvquickrim
+TIT  "Double Gauss F/5_ASPHERE"
+in cv_macro:cvquickrim
+WAV;go
+SPO; CAN;
+SPO
+GO
+BC S10  0
+aut;dra y; int y; efl=100;go
+in cv_macro:cvquickrim
+! Undo:  n
+! Undo:  aut;dra y; int y; efl=100;go
+BC S10  100
+EXI Y
