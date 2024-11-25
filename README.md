@@ -32,7 +32,7 @@ The purpose of this code is for step 2 mentioned above, directly tell the lens s
 - **d**: Spacing between the two lenses.
 
 4. **Update Your Lens Design**: Input these data into your optical system and re-optimize the system.
-
+Note: There is a sample in Sample folder, please view the .docx file to see the performance improvement of this method compared with add a thin plate.
 ---
 
 ## Notes
