@@ -1,0 +1,5 @@
+SEE 0
+LEN NEW
+GBL NUM ^CV_BACKEND_STARTUP_SEQUENCE; ^CV_BACKEND_STARTUP_SEQUENCE == 1
+RES "C:\Users\shuang60\Downloads\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Sample\ag_dblgauss_asphere.len"
+EXI Y

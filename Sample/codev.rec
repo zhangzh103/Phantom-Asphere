@@ -1,0 +1,18 @@
+SEE 0
+LEN NEW
+GBL NUM ^CV_BACKEND_STARTUP_SEQUENCE; ^CV_BACKEND_STARTUP_SEQUENCE == 1
+RES "C:\Users\shuang60\Downloads\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Sample\ag_dblgauss_asphere.len"
+VIE
+GO
+RES "C:\Users\shuang60\Downloads\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Sample\ag_dblgauss_phantom.len"
+VIE; CAN;
+VIE
+GO
+RES "C:\Users\shuang60\Downloads\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Sample\ag_dblgauss_test.len"
+VIE; CAN;
+VIE
+GO
+RES "C:\Users\shuang60\Downloads\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Phantom-Asphere-Phantom-Asphere-Easy-Use-Matlab\Sample\ag_dblgauss_phantom_after_opt.len"
+VIE; CAN;
+VIE
+GO

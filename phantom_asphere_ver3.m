@@ -1,42 +1,17 @@
-function phantom_asphere_ver3()%%%%%%%%%%%%%%one more thing!!! principle plane modification
 
+function phantom_asphere_ver3()%%%%%%%%%%%%%%one more thing!!! principle plane modification
+addpath("Codev_Dependent")
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% yb=0;
-% ya=1;
-% ub=0.0098333333333333333;
-% ub_=0.009506;
-% yb_=0.065556;
-% ya_=0.966667;
-% ua=0;
-% ua_=-0.010000;
-% n=1.5;
-% C1=1/100;
-% C2=1/-100;
-% %phi=1/100;
-% NA=0.00983333333333;
-% t=10;
-% phi1=C1*(n-1);
-% phi2=C2*(1-n);
-% d=10;
-% d1=2.5;
-% K=phi1+phi2-t*phi1*phi2/n;
-% dj=0.001;
-% dj=+7.55053978932568e-07;
-% %dj=0
-% inc_n=0.5;
-surface_num=10;
-[R1,R2,t,n,ya,ya_,yb,yb_,ua,ua_,ub,ub_,dj,NA]=basic_data_generator(surface_num);
+
+surface_num=11;%surface number of the asphere
+[R1,R2,t,n,ya,ya_,yb,yb_,ua,ua_,ub,ub_,dj,NA]=basic_data_generator(surface_num);%grab data
 C1=1/R1;
 C2=1/R2;
-%dj=7.55053978932568e-07;
-%dj=-5.8003679883e-06;
 dj=dj/100000000;
-%dj=0;%%%%%%%%%%%%%%%%%%%%%%%CAN NOT GET LENS TO WORK!!!!!!!
 inc_n=n-1;
 
-result=asphere_aberration_contribution(dj,inc_n,ya,yb);
+result=asphere_aberration_contribution(dj,inc_n,ya,yb);%calculate the original singlet contribution
 [S1,S2,S3,S4,S5,S6,delta,delta_]=singlet_aberration_contribution(C1,C2,ya,yb,ua,ub,n,NA,t);
-%[W040,W131,W222,W220]=S_2_W(S1,S2,S3,S4);
 
 
 
@@ -44,7 +19,7 @@ result=asphere_aberration_contribution(dj,inc_n,ya,yb);
 
 
 w=[0,0,0,0];
-w_expect=[S1,S2,S3,S4]+result;
+w_expect=[S1,S2,S3,S4]+result;%pure singlet contribution
 W040=1/8*w_expect(1);
 W131=1/2*w_expect(2);
 W222=1/2*w_expect(3);
@@ -53,18 +28,20 @@ w(4)=W220/NA*2;
 w(1)=W040/NA*4;
 w(2)=W131/NA*3;
 w(3)=W222/NA*2+w(4);
-w(4)=S4/4/NA*2;%why???
+w(4)=S4/4/NA*2;%why??? Not fully the same as the equation but correct
 deviation=1;
-while deviation>0.01
+while deviation>0.01%allowed error
 [C11,C21,t1,C12,C22,t2,d,deviation,delta2,delta2_]=thin_lens_thickning_spherical_coma_m2(ua,ua_,ub,ub_,ya,ya_,yb,yb_,n,w_expect,NA);
 end
+%The lens go like this way:
+%C11 t1 C21 d C12 t2 C22, the last air space comes fron the previosu
 fprintf("R1:%0.4f, R2:%0.4f, R3:%0.4f, R4:%0.4f, t1:%0.4f, t2:%0.4f, d:%0.4f\n",1/C11,1/C21,1/C12,1/C22,t1,t2,d);
 A=1;
 end
 
 function [C11,C21,t1,C12,C22,t2,d,deviation,delta,delta_]=thin_lens_thickning_spherical_coma_m2(ua,ua_,ub,ub_,ya,ya_,yb,yb_,n,w_expect,NA)
 
-con=[0.01,0.01,3, 0.01, 0.01, 3,1];%C11 C21 t1; C21 C22 t2
+con=[0.01,0.01,3, 0.01, 0.01, 3,1];%C11 C21 t1; C21 C22 t2 d
 lb=[-20,-20,0.0001,-20,-20,0.0001,0.00001];
 ubound=[20,20,10,20,20,10,10];
 %%%%%%%%%%%%%%%%%%%%%%%%R
@@ -110,28 +87,25 @@ t2=con(6);
 C22=con(5);
 [ua1,ua2,ua3,ua4,ub1,ub2,ub3,ub4,ya1,ya2,ya3,yb1,yb2,yb3]=paraxial_ray_trace_two_thick(C11,C21,C12,C22,t1,t2,d,ua,ub,ya,yb,n);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%from singlet_aberration_contribution
-
+%Use the ray trace data to calculate aberration contribution
 [S1_1,S2_1,S3_1,S4_1,S5_1,S6_1,delta,delta_]=singlet_aberration_contribution(C11,C21,ya,yb,ua,ub,n,NA,t1);%%%%%%%%%%%%%%%%%%%%%%%
 [S1_2,S2_2,S3_2,S4_2,S5_2,S6_2,delta,delta_]=singlet_aberration_contribution(C12,C22,ya2,yb2,ua2,ub2,n,NA,t2);
-%w_expect=[S1_r,S2_r];
-w_real=[S1_1+S1_2,S2_1+S2_2,S3_1+S3_2,S4_1+S4_2];
+w_real=[S1_1+S1_2,S2_1+S2_2,S3_1+S3_2,S4_1+S4_2];%aberration contribtion of the two lenses
 deviation=((w_real-(w_expect)));
-angle_dif=[ua4-ua_,ub4-ub_];
+angle_dif=[ua4-ua_,ub4-ub_];%The angle difference compare with the asphere
 angle_dif=angle_dif/[ua_,ub_];
 height_diff=[(ya3-ya_),(yb3-yb_)];
 height_diff=height_diff/[ya_,yb_];
 height_diff=sum(abs(height_diff));
-%deviation(4)=deviation(4)*10;
 phi1=(n-1)*C11;
 phi2=(1-n)*C21;
-%Phi1=phi1+phi2-t*phi1*phi2/n;
 
 deviation=deviation./(w_expect);
 deviation=sum(abs(deviation))+abs(angle_dif)+height_diff;
-%deviation=sum(abs(deviation));
 end
 
 function [S1,S2,S3,S4,S5,S6,delta,delta_]=singlet_aberration_contribution(C1,C2,ya,yb,ua,ub,n,NA,t)%pezval sum is not correct
+%calculate the aberration contribution from one siglet
 ua1=(ua-ya*(n-1)*C1)/n;
 ya1=ya+n*ua1*t/n;
 ua_=n*ua1-ya1*(1-n)*C2;
@@ -191,13 +165,14 @@ delta_=-phi1*t/n/Phi;
 result=[S1,S2,S3,S4,S5,S6,delta,delta_];
 end
 function [ua1,ua2,ua3,ua4,ub1,ub2,ub3,ub4,ya1,ya2,ya3,yb1,yb2,yb3]=paraxial_ray_trace_two_thick(C11,C21,C12,C22,t1,t2,d,ua,ub,ya,yb,n)
+%paraxial ray tracing for two thick lens with airspace
 ua1=(ua-ya*(n-1)*C11)/n;
 ya1=ya+n*ua1*t1/n;
 ua2=n*ua1-ya1*(1-n)*C21;
 ub1=(ub-yb*(n-1)*C11)/n;
 yb1=yb+n*ub1*t1/n;
 ub2=n*ub1-yb1*(1-n)*C21;
-ya2=ya1+ua2*d;
+ya2=ya1+ua2*d;%air space
 yb2=yb1+ub2*d;
 ua3=(ua2-ya2*(n-1)*C12)/n;
 ub3=(ub2-yb2*(n-1)*C12)/n;
@@ -208,6 +183,7 @@ ub4=n*ub3-yb3*(1-n)*C22;
 
 end
 function result=asphere_aberration_contribution(dj,inc_n,ya,yb)
+%do not use any more, grab the data directly from the Codev
 a=8*dj*ya^4*inc_n;
 ybar_y=yb/ya;
 S1=a;

@@ -10,7 +10,7 @@ result =cvbuf(0);%return the result as a double
 line=1;
 index=1;
 if surface_num>=10
-    index=2;
+    index=2;%there are two digit for index larger than 10
 end
 while 1
     if result(line,1:index)==num2str(surface_num)
